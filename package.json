@@ -1,5 +1,5 @@
 {
-  "name": "vscode-hsml",
+  "name": "hsml",
   "displayName": "hsml",
   "description": "hsml support for Visual Studio Code",
   "version": "0.1.0",
@@ -28,7 +28,7 @@
     "grammars": [
       {
         "language": "hsml",
-        "scopeName": "index.hsml",
+        "scopeName": "text.hsml",
         "path": "./syntaxes/hsml.tmLanguage.json"
       }
     ]

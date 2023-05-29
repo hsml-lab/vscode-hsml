@@ -3,32 +3,49 @@
   "name": "hsml",
   "patterns": [
     {
-      "include": "#keywords"
+      "name": "string.comment.buffered.block.hsml",
+      "comment": "html comment",
+      "begin": "//!",
+      "end": "$"
     },
     {
-      "include": "#strings"
+      "name": "comment.line.double-slash.hsml",
+      "comment": "hsml developer comment",
+      "begin": "//",
+      "end": "$"
+    },
+    {
+      "name": "entity.name.tag.hsml",
+      "comment": "hsml tag name",
+      "match": "^\\s*([a-z]+)(?=[\\.\\(\\s])"
+    },
+    {
+      "name": "punctuation.class.hsml",
+      "comment": "hsml punctuated class",
+      "match": "(\\.)([\\w\\:\\-\\[\\]\\#\\/]+)(?=[\\.\\(\\s])",
+      "captures": {
+        "0": {
+          "name": "entity.other.attribute-name.class.css.hsml"
+        },
+        "1": {
+          "name": "meta.attribute-name.class.css.hsml"
+        }
+      }
+    },
+    {
+      "name": "punctuation.separator.key-value.hsml",
+      "comment": "hsml attribute",
+      "match": "([\\w\\-]+)=?(\".*\")",
+      "captures": {
+        "1": {
+          "name": "entity.other.attribute-name.hsml"
+        },
+        "2": {
+          "name": "string.quoted.double.hsml"
+        }
+      }
     }
   ],
-  "repository": {
-    "keywords": {
-      "patterns": [
-        {
-          "name": "keyword.control.hsml",
-          "match": "\\b(if|while|for|return)\\b"
-        }
-      ]
-    },
-    "strings": {
-      "name": "string.quoted.double.hsml",
-      "begin": "\"",
-      "end": "\"",
-      "patterns": [
-        {
-          "name": "constant.character.escape.hsml",
-          "match": "\\\\."
-        }
-      ]
-    }
-  },
-  "scopeName": "index.hsml"
+  "repository": {},
+  "scopeName": "text.hsml"
 }
