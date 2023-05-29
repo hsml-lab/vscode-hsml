@@ -3,6 +3,9 @@
   "displayName": "hsml",
   "description": "hsml support for Visual Studio Code",
   "version": "0.1.0",
+  "scripts": {
+    "format": "prettier --cache --write ."
+  },
   "engines": {
     "vscode": "^1.78.0"
   },
@@ -29,5 +32,10 @@
         "path": "./syntaxes/hsml.tmLanguage.json"
       }
     ]
+  },
+  "devDependencies": {
+    "@types/node": "~20.2.5",
+    "prettier": "~2.8.8",
+    "prettier-plugin-organize-imports": "~3.2.2"
   }
 }
