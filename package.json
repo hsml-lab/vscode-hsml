@@ -1,0 +1,33 @@
+{
+  "name": "vscode-hsml",
+  "displayName": "hsml",
+  "description": "hsml support for Visual Studio Code",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.78.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "hsml",
+        "aliases": [
+          "hsml"
+        ],
+        "extensions": [
+          ".hsml"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "hsml",
+        "scopeName": "index.hsml",
+        "path": "./syntaxes/hsml.tmLanguage.json"
+      }
+    ]
+  }
+}
