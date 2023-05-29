@@ -20,11 +20,11 @@
       "match": "^\\s*([a-z]+)(?=[\\.\\(\\s])"
     },
     {
-      "name": "punctuation.class.hsml",
+      "name": "punctuation.separator.class.hsml",
       "comment": "hsml punctuated class",
-      "match": "(\\.)([\\w\\:\\-\\[\\]\\#\\/]+)(?=[\\.\\(\\s])",
+      "match": "(\\.)(([\\w\\:\\-\\#/]|(\\[.*?\\]))+)(?=[\\.\\(\\s])",
       "captures": {
-        "0": {
+        "2": {
           "name": "entity.other.attribute-name.class.css.hsml"
         },
         "1": {
