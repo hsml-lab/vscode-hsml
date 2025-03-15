@@ -80,6 +80,10 @@ $RECYCLE.BIN/
 # Built Visual Studio Code Extensions
 *.vsix
 
+# Build output
+client/out
+tsconfig.tsbuildinfo
+
 # Coverage reports
 coverage/
 

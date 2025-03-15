@@ -18,7 +18,9 @@
   },
   "publisher": "Shinigami92",
   "type": "module",
+  "main": "./client/out/extension",
   "scripts": {
+    "build": "pnpm --recursive run build",
     "clean": "git clean -fdx --exclude .claude",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
@@ -44,6 +46,11 @@
     "vscode-tmgrammar-test": "0.1.3"
   },
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "HSML configuration",
+      "properties": {}
+    },
     "grammars": [
       {
         "language": "hsml",

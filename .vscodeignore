@@ -9,3 +9,7 @@
 node_modules/
 pnpm-lock.yaml
 pnpm-workspace.yaml
+**/tsconfig.json
+**/*.map
+**/*.ts
+**/.vscode-test.*

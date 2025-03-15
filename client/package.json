@@ -1,0 +1,34 @@
+{
+  "name": "@hsml/lsp-client",
+  "version": "0.1.0",
+  "description": "HSML Language Server Client",
+  "license": "MIT",
+  "author": {
+    "name": "Christopher Quadflieg",
+    "email": "chrissi92@hotmail.de",
+    "url": "https://github.com/Shinigami92"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Shinigami92/vscode-hsml"
+  },
+  "publisher": "hsml-lab",
+  "scripts": {
+    "build": "run-s build:clean build:code",
+    "build:clean": "rimraf out",
+    "build:code": "tsup-node",
+    "ts-check": "tsc",
+    "vscode:prepublish": "tsc -p ./"
+  },
+  "dependencies": {
+    "vscode-languageclient": "9.0.1"
+  },
+  "devDependencies": {
+    "@types/vscode": "1.98.0",
+    "tsup": "8.4.0"
+  },
+  "activationEvents": [],
+  "engines": {
+    "vscode": "^1.98.0"
+  }
+}
