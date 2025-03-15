@@ -5,6 +5,7 @@
     "esbenp.prettier-vscode",
     "github.vscode-github-actions",
     "kravets.vscode-publint",
+    "ms-vscode.extension-test-runner",
     "pflannery.vscode-versionlens",
     "redhat.vscode-yaml"
   ]

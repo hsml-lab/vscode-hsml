@@ -3,5 +3,13 @@
   "files.associations": {
     "*.json5": "jsonc"
   },
+  "files.exclude": {
+    "out": false,
+    "dist": false
+  },
+  "search.exclude": {
+    "out": true,
+    "dist": true
+  },
   "typescript.tsdk": "node_modules/typescript/lib"
 }
