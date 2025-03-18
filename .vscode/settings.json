@@ -1,4 +1,5 @@
 {
+  "cSpell.words": ["hsml"],
   "files.associations": {
     "*.json5": "jsonc"
   },

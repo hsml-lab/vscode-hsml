@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "hsml",
+  "name": "HSML",
   "patterns": [
     {
       "name": "string.comment.buffered.block.hsml",
