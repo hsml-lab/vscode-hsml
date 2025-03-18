@@ -1,2 +1,4 @@
+client/out
 node_modules
 *.vsix
+tsconfig.tsbuildinfo
