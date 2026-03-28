@@ -26,7 +26,7 @@
     "ts-check": "tsc --noEmit",
     "test": "vitest",
     "test:update-snapshots": "vitest run -u",
-    "test:grammar": "vscode-tmgrammar-test -g syntaxes/hsml.tmLanguage.json 'tests/**/*.test.hsml'",
+    "test:grammar": "vscode-tmgrammar-test -g syntaxes/hsml.tmLanguage.json \"tests/**/*.test.hsml\"",
     "coverage": "vitest run --coverage",
     "preflight": "pnpm install && run-s format lint ts-check test:update-snapshots"
   },
