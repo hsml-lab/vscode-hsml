@@ -1,7 +1,7 @@
 {
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
-  "cSpell.words": ["hsml"],
+  "cSpell.words": ["claude", "hsml", "oxfmt", "oxlint", "Quadflieg", "tmgrammar"],
   "files.associations": {
     "*.json5": "jsonc"
   },

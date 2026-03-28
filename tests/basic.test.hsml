@@ -1,0 +1,26 @@
+// SYNTAX TEST "text.hsml" "Basic HSML syntax"
+
+// This is a developer comment
+// <--- comment.line.double-slash.hsml
+
+//! This is an HTML comment
+//  <--- string.comment.buffered.block.hsml
+
+ div Hello World
+// ^ entity.name.tag.hsml
+
+ h1 Title
+//^ entity.name.tag.hsml
+
+ div.container
+// ^ entity.name.tag.hsml
+//   ^ punctuation.separator.class.hsml
+//    ^^^^^^^^^ entity.other.attribute-name.class.css.hsml
+
+ div.foo.bar
+//      ^ punctuation.separator.class.hsml
+//       ^^^ entity.other.attribute-name.class.css.hsml
+
+ src="photo.jpg"
+// ^ entity.other.attribute-name.hsml
+//    ^^^^^^^^^^^ string.quoted.double.hsml

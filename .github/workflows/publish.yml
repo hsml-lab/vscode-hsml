@@ -32,7 +32,7 @@ jobs:
       - name: Verify tag matches package version
         run: |
           TAG="${GITHUB_REF_NAME#v}"
-          PKG_VERSION="$(node -p "require('./package.json').version")"
+          PKG_VERSION="$(node -e "import('./package.json',{with:{type:'json'}}).then(m=>process.stdout.write(m.default.version))")"
           [ "$TAG" = "$PKG_VERSION" ] || {
             echo "Tag version ($TAG) does not match package.json version ($PKG_VERSION)"
             exit 1
