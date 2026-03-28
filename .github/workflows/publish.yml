@@ -1,9 +1,10 @@
 name: Publish
 
 on:
-  push:
-    tags:
-      - v*
+  workflow_run:
+    workflows: ['Release']
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -12,6 +13,7 @@ jobs:
   publish-vscode:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: 'Publish to VS Code Marketplace'
     steps:
       - name: Checkout
@@ -45,18 +47,3 @@ jobs:
         run: pnpm dlx @vscode/vsce@3.7.1 publish --no-git-tag-version --no-update-package-json
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
-
-  release:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    name: 'Create GitHub Release'
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Create release
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2
-        with:
-          generate_release_notes: true
