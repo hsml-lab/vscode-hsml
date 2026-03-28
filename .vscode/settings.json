@@ -6,12 +6,12 @@
     "*.json5": "jsonc"
   },
   "files.exclude": {
-    "out": false,
-    "dist": false
+    "**/out": false,
+    "**/dist": false
   },
   "search.exclude": {
-    "out": true,
-    "dist": true
+    "**/out": true,
+    "**/dist": true
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "[json]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
