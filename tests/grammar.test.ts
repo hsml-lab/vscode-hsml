@@ -113,7 +113,7 @@ describe('classes', () => {
   it('should tokenize multiple classes', () => {
     const tokens = tokenize('div.foo.bar ');
     const classTokens = tokens.filter((t) =>
-      t.scopes.some((s) => s.includes('entity.other.attribute-name.class.css.hsml')),
+      t.scopes.some((s) => s === 'entity.other.attribute-name.class.css.hsml'),
     );
     expect(classTokens.length).toBeGreaterThanOrEqual(2);
   });
