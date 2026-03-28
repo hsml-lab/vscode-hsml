@@ -45,7 +45,7 @@ describe('deactivate', () => {
     const { mockStop } = await import('./__mocks__/vscode-languageclient-node.js');
     const { activate, deactivate } = await import('../client/src/extension.js');
     await activate(mockContext);
-    deactivate();
+    await deactivate();
     expect(mockStop).toHaveBeenCalled();
   });
 });
