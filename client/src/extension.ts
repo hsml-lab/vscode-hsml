@@ -2,12 +2,15 @@ import type { ExtensionContext } from 'vscode';
 import { workspace } from 'vscode';
 import type { Executable, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { LanguageClient } from 'vscode-languageclient/node';
+import { resolveServerPath } from './binary.js';
 
 let client: LanguageClient | undefined;
 
-export function activate(_context: ExtensionContext) {
-  const config = workspace.getConfiguration('hsml');
-  const serverPath = config.get<string>('server.path', 'hsml');
+export async function activate(context: ExtensionContext) {
+  const serverPath = await resolveServerPath(context);
+  if (!serverPath) {
+    return;
+  }
 
   const run: Executable = {
     command: serverPath,
