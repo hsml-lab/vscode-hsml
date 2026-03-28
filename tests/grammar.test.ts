@@ -1,11 +1,8 @@
 import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { loadWASM, OnigScanner, OnigString } from 'vscode-oniguruma';
 import { type IGrammar, INITIAL, Registry, parseRawGrammar } from 'vscode-textmate';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let grammar: IGrammar;
 
@@ -28,7 +25,7 @@ function findToken(tokens: Token[], scope: string): Token | undefined {
 
 beforeAll(async () => {
   const wasmBin = readFileSync(
-    join(__dirname, '../node_modules/vscode-oniguruma/release/onig.wasm'),
+    join(import.meta.dirname, '../node_modules/vscode-oniguruma/release/onig.wasm'),
   ).buffer;
 
   await loadWASM(wasmBin);
@@ -40,7 +37,7 @@ beforeAll(async () => {
     }),
     loadGrammar: async (scopeName) => {
       if (scopeName === 'text.hsml') {
-        const grammarPath = join(__dirname, '../syntaxes/hsml.tmLanguage.json');
+        const grammarPath = join(import.meta.dirname, '../syntaxes/hsml.tmLanguage.json');
         const data = readFileSync(grammarPath, 'utf-8');
         return parseRawGrammar(data, grammarPath);
       }
