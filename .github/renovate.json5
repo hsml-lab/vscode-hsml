@@ -41,6 +41,10 @@
       "matchPackageNames": ["oxfmt"]
     },
     {
+      "groupName": "vitest",
+      "matchPackageNames": ["@vitest/**", "vitest"]
+    },
+    {
       "groupName": "typescript",
       "matchPackageNames": ["typescript"]
     }
