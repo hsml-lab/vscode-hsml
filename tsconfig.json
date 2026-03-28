@@ -10,5 +10,6 @@
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true
   },
-  "exclude": ["client"]
+  "include": ["tests/**/*.ts", "vitest.config.ts"],
+  "exclude": ["tests/extension.test.ts", "tests/__mocks__/**"]
 }
