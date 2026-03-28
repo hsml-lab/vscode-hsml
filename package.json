@@ -18,7 +18,7 @@
   },
   "publisher": "hsml-lab",
   "type": "module",
-  "main": "./client/out/extension.mjs",
+  "main": "./client/out/extension.js",
   "scripts": {
     "build": "pnpm --recursive run build",
     "clean": "git clean -fdx --exclude .claude",

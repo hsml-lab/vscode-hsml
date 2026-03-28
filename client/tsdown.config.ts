@@ -12,4 +12,5 @@ export default defineConfig({
   platform: 'node',
   minify: false,
   unbundle: false,
+  fixedExtension: false,
 });
