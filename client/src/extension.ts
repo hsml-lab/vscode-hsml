@@ -5,19 +5,18 @@ import { LanguageClient } from 'vscode-languageclient/node';
 
 let client: LanguageClient | undefined;
 
-export function activate(context: ExtensionContext) {
-  console.debug('[@hsml/lsp-client:activate]', context);
+export function activate(_context: ExtensionContext) {
+  const config = workspace.getConfiguration('hsml');
+  const serverPath = config.get<string>('server.path', 'hsml');
 
   const run: Executable = {
-    command: '/Users/shinigami/OpenSource/Shinigami92/hsml/target/debug/hsml',
+    command: serverPath,
     args: ['lsp'],
   };
 
   const serverOptions: ServerOptions = {
     run,
-    debug: {
-      ...run,
-    },
+    debug: run,
   };
 
   const clientOptions: LanguageClientOptions = {
@@ -34,16 +33,13 @@ export function activate(context: ExtensionContext) {
     clientOptions,
   );
 
-  console.debug('[@hsml/lsp-client:activate]', 'starting client');
   client.start();
 }
 
 export function deactivate(): Promise<void> | undefined {
-  console.debug('[@hsml/lsp-client:deactivate]');
   if (!client) {
     return undefined;
   }
 
-  console.debug('[@hsml/lsp-client:deactivate]', 'stopping client');
   return client.stop();
 }

@@ -9,5 +9,6 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true
-  }
+  },
+  "exclude": ["client"]
 }

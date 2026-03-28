@@ -10,25 +10,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Shinigami92/vscode-hsml"
+    "url": "https://github.com/hsml-lab/vscode-hsml.git"
   },
   "publisher": "hsml-lab",
+  "type": "module",
   "scripts": {
-    "build": "run-s build:clean build:code",
-    "build:clean": "rimraf out",
-    "build:code": "tsup-node",
-    "ts-check": "tsc",
-    "vscode:prepublish": "tsc -p ./"
+    "build": "tsdown",
+    "ts-check": "tsc --noEmit"
   },
   "dependencies": {
     "vscode-languageclient": "9.0.1"
   },
   "devDependencies": {
-    "@types/vscode": "1.98.0",
-    "tsup": "8.4.0"
+    "@types/vscode": "1.110.0",
+    "tsdown": "0.21.7"
   },
-  "activationEvents": [],
   "engines": {
-    "vscode": "^1.98.0"
+    "vscode": ">=1.101.0"
   }
 }
