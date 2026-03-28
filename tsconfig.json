@@ -9,5 +9,7 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["tests/**/*.ts", "vitest.config.ts"],
+  "exclude": ["tests/extension.test.ts", "tests/__mocks__/**"]
 }

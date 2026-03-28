@@ -37,6 +37,9 @@ jobs:
       - name: Install deps
         run: pnpm install
 
+      - name: Build
+        run: pnpm run build
+
       # vscode-tmgrammar-test crashes on Windows due to a libuv cleanup bug
       - name: Grammar tests
         if: runner.os != 'Windows'

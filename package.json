@@ -16,24 +16,27 @@
     "type": "git",
     "url": "https://github.com/hsml-lab/vscode-hsml.git"
   },
-  "publisher": "Shinigami92",
+  "publisher": "hsml-lab",
   "type": "module",
+  "main": "./client/out/extension.js",
   "scripts": {
+    "build": "pnpm --recursive run build",
     "clean": "git clean -fdx --exclude .claude",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "lint": "oxlint",
-    "ts-check": "tsc --noEmit",
+    "ts-check": "tsc --noEmit && pnpm --recursive run ts-check",
     "test": "run-s test:grammar test:vitest",
     "test:vitest": "vitest",
     "test:update-snapshots": "vitest run -u",
     "test:grammar": "vscode-tmgrammar-test -g syntaxes/hsml.tmLanguage.json \"tests/**/*.test.hsml\"",
     "coverage": "vitest run --coverage",
-    "preflight": "pnpm install && run-s format lint ts-check test:grammar test:update-snapshots"
+    "preflight": "pnpm install && run-s format lint ts-check build test:grammar test:update-snapshots"
   },
   "devDependencies": {
     "@types/node": "24.12.0",
     "@vitest/coverage-v8": "4.1.2",
+    "@vscode/test-electron": "2.5.2",
     "npm-run-all2": "8.0.4",
     "oxfmt": "0.42.0",
     "oxlint": "1.57.0",
@@ -44,6 +47,17 @@
     "vscode-tmgrammar-test": "0.1.3"
   },
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "HSML configuration",
+      "properties": {
+        "hsml.server.path": {
+          "type": "string",
+          "default": "hsml",
+          "description": "Path to the hsml binary. Defaults to 'hsml' (looked up in PATH)."
+        }
+      }
+    },
     "grammars": [
       {
         "language": "hsml",
