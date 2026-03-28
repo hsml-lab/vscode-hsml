@@ -7,6 +7,16 @@
     "Programming Languages"
   ],
   "license": "MIT",
+  "author": {
+    "name": "Christopher Quadflieg",
+    "email": "chrissi92@hotmail.de",
+    "url": "https://github.com/Shinigami92"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hsml-lab/vscode-hsml.git"
+  },
+  "publisher": "Shinigami92",
   "type": "commonjs",
   "scripts": {
     "clean": "git clean -fdx --exclude .claude",
