@@ -1,7 +1,7 @@
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createReadStream, createWriteStream } from 'node:fs';
-import { chmod, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { access, chmod, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import type { IncomingMessage } from 'node:http';
 import { get as httpsGet } from 'node:https';
 import { join } from 'node:path';
@@ -45,12 +45,14 @@ export async function resolveServerPath(context: ExtensionContext): Promise<stri
   try {
     const metadata = JSON.parse(await readFile(metadataPath, 'utf-8')) as BinaryMetadata;
     if (metadata.version) {
+      // Verify the binary file actually exists
+      await access(binaryPath);
       // Binary exists, check for updates in the background
       checkForUpdate(context).catch(() => {});
       return binaryPath;
     }
   } catch {
-    // No metadata or invalid — continue to download prompt
+    // No metadata, invalid, or binary missing — continue to download prompt
   }
 
   // Prompt user to download
@@ -173,12 +175,36 @@ async function checkForUpdate(context: ExtensionContext): Promise<void> {
   }
 
   try {
-    await downloadBinary(context, latestVersion);
+    // Download to a staging directory to avoid overwriting the running binary
+    const stagingDir = join(context.globalStorageUri.fsPath, '_staging');
+    await mkdir(stagingDir, { recursive: true });
+
+    const stagingContext = {
+      ...context,
+      globalStorageUri: { fsPath: stagingDir } as typeof context.globalStorageUri,
+    } as ExtensionContext;
+
+    await downloadBinary(stagingContext, latestVersion);
+
+    // Move staged binary to the main location on reload
+    const binaryName = getBinaryName();
+    const stagedBinary = join(stagingDir, binaryName);
+    const targetBinary = join(context.globalStorageUri.fsPath, binaryName);
+
     const reload = await window.showInformationMessage(
       'hsml has been updated. Reload window to apply?',
       'Reload',
     );
     if (reload === 'Reload') {
+      // Replace the binary and metadata before reloading
+      await rm(targetBinary, { force: true });
+      const { rename } = await import('node:fs/promises');
+      await rename(stagedBinary, targetBinary);
+      await rename(
+        join(stagingDir, 'metadata.json'),
+        join(context.globalStorageUri.fsPath, 'metadata.json'),
+      );
+      await rm(stagingDir, { recursive: true, force: true });
       await commands.executeCommand('workbench.action.reloadWindow');
     }
   } catch (error) {
@@ -271,21 +297,26 @@ function followRedirects(url: string, options?: { timeout?: number }): Promise<I
 }
 
 async function downloadFile(url: string, destPath: string): Promise<void> {
-  const res = await followRedirects(url);
+  const res = await followRedirects(url, { timeout: 60_000 });
   const file = createWriteStream(destPath);
 
-  return new Promise((resolve, reject) => {
-    res.pipe(file);
-    file.on('finish', () => {
-      file.close();
-      resolve();
+  try {
+    await new Promise<void>((resolve, reject) => {
+      res.pipe(file);
+      file.on('finish', () => {
+        file.close();
+        resolve();
+      });
+      file.on('error', (err: Error) => {
+        file.close();
+        reject(err);
+      });
+      res.on('error', reject);
     });
-    file.on('error', (err: Error) => {
-      file.close();
-      reject(err);
-    });
-    res.on('error', reject);
-  });
+  } catch (error) {
+    await rm(destPath, { force: true });
+    throw error;
+  }
 }
 
 async function fetchJson(url: string): Promise<unknown> {
