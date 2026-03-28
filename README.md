@@ -1,65 +1,49 @@
-# hsml README
+[![CI](https://github.com/hsml-lab/vscode-hsml/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hsml-lab/vscode-hsml/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/hsml-lab/vscode-hsml.svg)](https://github.com/hsml-lab/vscode-hsml/blob/main/LICENSE)
+[![Donate: PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/donate?hosted_button_id=L7GY729FBKTZY)
 
-This is the README for your extension "hsml". After writing up a brief description, we recommend including the following sections.
+# vscode-hsml
+
+[HSML](https://github.com/hsml-lab/hsml) language support for Visual Studio Code.
+
+> Still early — tracking [hsml](https://github.com/hsml-lab/hsml) as it stabilizes.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Syntax highlighting for `.hsml` files
+- Comment toggling (`//` line comments)
+- Bracket matching and auto-closing pairs
 
-For example if there is an image subfolder under your extension project workspace:
+## HSML syntax at a glance
 
-\!\[feature X\]\(images/feature-x.png\)
+```hsml
+// Tags (div is the default when only class/id is used)
+h1 Hello World
+.container
+  .card Hello
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+// Classes and IDs
+h1#title.text-red.font-bold Hello
 
-## Requirements
+// Attributes
+img(src="/photo.jpg" alt="A photo")
+a(href="https://example.com" target="_blank") Link
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+// Multiline attributes
+button(
+  @click="handleClick"
+  :disabled="loading"
+  class="btn btn-primary"
+) Submit
 
-## Extension Settings
+// Vue directives work as-is
+div(v-if="show")
+  ul
+    li(v-for="item in items" :key="item.id") {{ item.name }}
+```
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+For the full syntax reference, see the [HSML documentation](https://github.com/hsml-lab/hsml#hsml-syntax).
 
-For example:
+## License
 
-This extension contributes the following settings:
-
-- `myExtension.enable`: Enable/disable this extension.
-- `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-- Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-- Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-- Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-- [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-- [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+[MIT](LICENSE)
