@@ -20,7 +20,7 @@ function tokenize(line: string): Token[] {
 }
 
 function findToken(tokens: Token[], scope: string): Token | undefined {
-  return tokens.find((t) => t.scopes.some((s) => s.includes(scope)));
+  return tokens.find((t) => t.scopes.some((s) => s === scope));
 }
 
 beforeAll(async () => {
