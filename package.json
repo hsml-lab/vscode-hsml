@@ -24,11 +24,12 @@
     "format:check": "oxfmt --check .",
     "lint": "oxlint",
     "ts-check": "tsc --noEmit",
-    "test": "vitest",
+    "test": "run-s test:grammar test:vitest",
+    "test:vitest": "vitest",
     "test:update-snapshots": "vitest run -u",
     "test:grammar": "vscode-tmgrammar-test -g syntaxes/hsml.tmLanguage.json \"tests/**/*.test.hsml\"",
     "coverage": "vitest run --coverage",
-    "preflight": "pnpm install && run-s format lint ts-check test:update-snapshots"
+    "preflight": "pnpm install && run-s format lint ts-check test:grammar test:update-snapshots"
   },
   "devDependencies": {
     "@types/node": "24.12.0",
