@@ -14,6 +14,7 @@ export default defineConfig({
         import.meta.dirname,
         'tests/__mocks__/vscode-languageclient-node.ts',
       ),
+      './binary.js': join(import.meta.dirname, 'tests/__mocks__/binary.ts'),
     },
   },
 });
