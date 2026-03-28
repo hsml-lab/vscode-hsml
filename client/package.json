@@ -19,12 +19,10 @@
     "build": "tsdown",
     "ts-check": "tsc --noEmit"
   },
-  "dependencies": {
-    "vscode-languageclient": "9.0.1"
-  },
   "devDependencies": {
     "@types/vscode": "1.110.0",
-    "tsdown": "0.21.7"
+    "tsdown": "0.21.7",
+    "vscode-languageclient": "9.0.1"
   },
   "engines": {
     "vscode": ">=1.101.0"
