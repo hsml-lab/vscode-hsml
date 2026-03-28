@@ -33,22 +33,12 @@
       "rangeStrategy": "replace"
     },
     {
-      "groupName": "eslint",
-      "matchPackageNames": [
-        "@eslint/**",
-        "@stylistic/**",
-        "eslint",
-        "eslint-**",
-        "typescript-eslint"
-      ]
+      "groupName": "oxlint",
+      "matchPackageNames": ["oxlint", "oxlint-tsgolint"]
     },
     {
-      "groupName": "vitest",
-      "matchPackageNames": ["@vitest/**", "vitest"]
-    },
-    {
-      "groupName": "prettier",
-      "matchPackageNames": ["prettier"]
+      "groupName": "oxfmt",
+      "matchPackageNames": ["oxfmt"]
     },
     {
       "groupName": "typescript",

@@ -1,4 +1,12 @@
+.claude/
+.editorconfig
+.github/
+.gitattributes
+.gitignore
+.oxfmtrc.json
 .vscode/**
 .vscode-test/**
-.gitignore
+node_modules/
+pnpm-lock.yaml
+pnpm-workspace.yaml
 vsc-extension-quickstart.md
