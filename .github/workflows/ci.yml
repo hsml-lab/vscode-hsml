@@ -37,8 +37,11 @@ jobs:
       - name: Install deps
         run: pnpm install
 
+      - name: Grammar tests
+        run: pnpm run test:grammar
+
       - name: Test
-        run: pnpm run test -- run
+        run: pnpm run test:vitest
 
   coverage:
     runs-on: ubuntu-latest
@@ -98,6 +101,9 @@ jobs:
 
       - name: Type check
         run: pnpm run ts-check
+
+      - name: Grammar tests
+        run: pnpm run test:grammar
 
       - name: Check formatting
         run: pnpm run format:check
