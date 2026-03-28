@@ -1,3 +1,4 @@
+[![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/hsml-lab.hsml.svg)](https://marketplace.visualstudio.com/items?itemName=hsml-lab.hsml)
 [![CI](https://github.com/hsml-lab/vscode-hsml/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hsml-lab/vscode-hsml/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/github/license/hsml-lab/vscode-hsml.svg)](https://github.com/hsml-lab/vscode-hsml/blob/main/LICENSE)
 [![Donate: PayPal](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/donate?hosted_button_id=L7GY729FBKTZY)
@@ -11,6 +12,8 @@
 ## Features
 
 - Syntax highlighting for `.hsml` files
+- Diagnostics and hover via the [hsml](https://github.com/hsml-lab/hsml) language server
+- Auto-download of the `hsml` binary from GitHub releases
 - Comment toggling (`//` line comments)
 - Bracket matching and auto-closing pairs
 
