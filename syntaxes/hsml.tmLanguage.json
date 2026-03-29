@@ -4,11 +4,11 @@
   "patterns": [
     { "include": "#comments" },
     { "include": "#doctype" },
+    { "include": "#text-block-line" },
     { "include": "#tag" },
     { "include": "#id" },
     { "include": "#class" },
-    { "include": "#attributes" },
-    { "include": "#text-block" }
+    { "include": "#attributes" }
   ],
   "repository": {
     "comments": {
@@ -86,17 +86,37 @@
           },
           "patterns": [
             { "include": "#comments" },
+            { "include": "#attribute-directive" },
             { "include": "#attribute-pair" },
             { "include": "#attribute-boolean" }
           ]
         }
       ]
     },
+    "attribute-directive": {
+      "patterns": [
+        {
+          "comment": "Vue/Angular directive with value (:src, @click, v-if, #slot, [prop], (event))",
+          "match": "([:@]\\w[\\w\\-.]*|v-[\\w\\-.]+|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(\"[^\"]*\"|'[^']*')",
+          "captures": {
+            "1": { "name": "keyword.control.directive.hsml" },
+            "2": { "name": "string.quoted.hsml" }
+          }
+        },
+        {
+          "comment": "Vue/Angular directive without value (#default, v-else)",
+          "match": "(?<=\\(|\\s)([:@]\\w[\\w\\-.]*|v-[\\w\\-.]+|#\\w[\\w\\-.]*)(?=\\s|\\))",
+          "captures": {
+            "1": { "name": "keyword.control.directive.hsml" }
+          }
+        }
+      ]
+    },
     "attribute-pair": {
       "patterns": [
         {
-          "comment": "attribute with value (key=\"value\" or key='value')",
-          "match": "([:@#]?[\\w\\-.]+(?:\\[.*?\\])?(?:\\.[\\w-]+)*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(\"[^\"]*\"|'[^']*')",
+          "comment": "regular attribute with value (key=\"value\" or key='value')",
+          "match": "([\\w\\-]+(?:\\.[\\w-]+)*)\\s*=\\s*(\"[^\"]*\"|'[^']*')",
           "captures": {
             "1": { "name": "entity.other.attribute-name.hsml" },
             "2": { "name": "string.quoted.hsml" }
@@ -108,19 +128,23 @@
       "patterns": [
         {
           "comment": "boolean/valueless attribute (e.g. disabled, required)",
-          "match": "(?<=\\(|\\s)([:@#]?[\\w\\-]+)(?=\\s|\\))",
+          "match": "(?<=\\(|\\s)([\\w\\-]+)(?=\\s|\\))",
           "captures": {
             "1": { "name": "entity.other.attribute-name.hsml" }
           }
         }
       ]
     },
-    "text-block": {
+    "text-block-line": {
       "patterns": [
         {
-          "comment": "text block marker (. at end of tag line)",
-          "match": "(?<=\\S)\\.\\s*$",
-          "name": "punctuation.definition.text-block.hsml"
+          "comment": "tag line ending with . starts a text block; content lines must be indented deeper than the tag",
+          "begin": "(?<=^(\\s*)\\S.*)(\\.)\\s*$",
+          "beginCaptures": {
+            "2": { "name": "punctuation.definition.text-block.hsml" }
+          },
+          "while": "^(\\1  |\\s*$)",
+          "contentName": "text.block.hsml"
         }
       ]
     }

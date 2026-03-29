@@ -197,19 +197,19 @@ describe('attributes', () => {
     expect(findToken(tokens, 'string.quoted.hsml')?.text).toBe("'hello'");
   });
 
-  it('should tokenize Vue binding attributes', () => {
+  it('should tokenize Vue binding attributes as directives', () => {
     const tokens = tokenize('img(:src="imageUrl")');
-    expect(findToken(tokens, 'entity.other.attribute-name.hsml')?.text).toBe(':src');
+    expect(findToken(tokens, 'keyword.control.directive.hsml')?.text).toBe(':src');
   });
 
-  it('should tokenize Vue event attributes', () => {
+  it('should tokenize Vue event attributes as directives', () => {
     const tokens = tokenize('button(@click="handler")');
-    expect(findToken(tokens, 'entity.other.attribute-name.hsml')?.text).toBe('@click');
+    expect(findToken(tokens, 'keyword.control.directive.hsml')?.text).toBe('@click');
   });
 
   it('should tokenize Vue directives', () => {
     const tokens = tokenize('div(v-if="show")');
-    expect(findToken(tokens, 'entity.other.attribute-name.hsml')?.text).toBe('v-if');
+    expect(findToken(tokens, 'keyword.control.directive.hsml')?.text).toBe('v-if');
   });
 
   it('should tokenize opening paren', () => {
@@ -225,7 +225,34 @@ describe('attributes', () => {
 
 describe('text block', () => {
   it('should tokenize text block marker', () => {
-    const tokens = tokenize('p.text-lg.');
+    const tokens = tokenize('  p.text-lg.');
     expect(findToken(tokens, 'punctuation.definition.text-block.hsml')?.text).toBe('.');
+  });
+
+  it('should scope text block content lines and not match tags', () => {
+    // Simulate multi-line tokenization with ruleStack
+    const line1 = '      p.text-lg.font-medium.';
+    const line2 = '        on large teams.';
+    const line3 = '    figcaption.font-medium';
+
+    const r1 = grammar.tokenizeLine(line1, INITIAL);
+    const r2 = grammar.tokenizeLine(line2, r1.ruleStack);
+    const r3 = grammar.tokenizeLine(line3, r2.ruleStack);
+
+    // Line 2 should be text block, NOT a tag
+    const line2Tokens = r2.tokens.map((t) => ({
+      text: line2.substring(t.startIndex, t.endIndex),
+      scopes: t.scopes,
+    }));
+    expect(findToken(line2Tokens, 'entity.name.tag.hsml')).toBeUndefined();
+    expect(findToken(line2Tokens, 'text.block.hsml')).toBeDefined();
+
+    // Line 3 should exit text block and match as tag
+    const line3Tokens = r3.tokens.map((t) => ({
+      text: line3.substring(t.startIndex, t.endIndex),
+      scopes: t.scopes,
+    }));
+    expect(findToken(line3Tokens, 'entity.name.tag.hsml')).toBeDefined();
+    expect(findToken(line3Tokens, 'text.block.hsml')).toBeUndefined();
   });
 });
