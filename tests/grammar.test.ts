@@ -115,6 +115,16 @@ describe('tag names', () => {
     const tokens = tokenize('my-component Hello');
     expect(findToken(tokens, 'entity.name.tag.hsml')?.text).toBe('my-component');
   });
+
+  it('should tokenize PascalCase component tags', () => {
+    const tokens = tokenize('PwaBadge.xl:hidden');
+    expect(findToken(tokens, 'entity.name.tag.hsml')?.text).toBe('PwaBadge');
+  });
+
+  it('should tokenize PascalCase tag with attributes', () => {
+    const tokens = tokenize('NavUser(v-if="isHydrated")');
+    expect(findToken(tokens, 'entity.name.tag.hsml')?.text).toBe('NavUser');
+  });
 });
 
 describe('IDs', () => {

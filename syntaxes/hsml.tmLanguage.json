@@ -44,8 +44,8 @@
       "patterns": [
         {
           "name": "entity.name.tag.hsml",
-          "comment": "hsml tag name (e.g. div, h1, custom-element)",
-          "match": "^\\s*([a-z][a-z0-9-]*)(?=[.#(\\s])"
+          "comment": "hsml tag name (e.g. div, h1, custom-element, PwaBadge)",
+          "match": "^\\s*([a-zA-Z][a-zA-Z0-9-]*)(?=[.#(\\s])"
         }
       ]
     },
@@ -106,7 +106,7 @@
         },
         {
           "comment": "Vue directive without value (v-else, v-cloak, etc.)",
-          "match": "(?<=\\(|\\s)(v-[\\w\\-.]+)(?=\\s|\\))",
+          "match": "(v-[\\w\\-.]+)(?=\\s|\\)|$)",
           "captures": {
             "1": { "name": "keyword.control.directive.hsml" }
           }
@@ -120,8 +120,16 @@
           }
         },
         {
+          "comment": "Vue/Angular binding with multiline value (:class=\"{...)",
+          "match": "([:@#]\\w[\\w\\-.]*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(\"[^\"]*|'[^']*)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.hsml" },
+            "2": { "name": "string.quoted.hsml" }
+          }
+        },
+        {
           "comment": "Vue/Angular binding without value (#default, :disabled)",
-          "match": "(?<=\\(|\\s)([:@#]\\w[\\w\\-.]*)(?=\\s|\\))",
+          "match": "([:@#]\\w[\\w\\-.]*)(?=\\s|\\)|$)",
           "captures": {
             "1": { "name": "entity.other.attribute-name.hsml" }
           }
@@ -133,6 +141,14 @@
         {
           "comment": "regular attribute with value (key=\"value\" or key='value')",
           "match": "([\\w\\-]+(?:\\.[\\w-]+)*)\\s*=\\s*(\"[^\"]*\"|'[^']*')",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.hsml" },
+            "2": { "name": "string.quoted.hsml" }
+          }
+        },
+        {
+          "comment": "regular attribute with multiline value (key=\"...)",
+          "match": "([\\w\\-]+(?:\\.[\\w-]+)*)\\s*=\\s*(\"[^\"]*|'[^']*)",
           "captures": {
             "1": { "name": "entity.other.attribute-name.hsml" },
             "2": { "name": "string.quoted.hsml" }
