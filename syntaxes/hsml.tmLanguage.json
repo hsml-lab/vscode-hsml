@@ -2,50 +2,128 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "HSML",
   "patterns": [
-    {
-      "name": "string.comment.buffered.block.hsml",
-      "comment": "html comment",
-      "begin": "//!",
-      "end": "$"
-    },
-    {
-      "name": "comment.line.double-slash.hsml",
-      "comment": "hsml developer comment",
-      "begin": "//",
-      "end": "$"
-    },
-    {
-      "name": "entity.name.tag.hsml",
-      "comment": "hsml tag name",
-      "match": "^\\s*([a-z]+[a-z0-9]*)(?=[\\.\\(\\s])"
-    },
-    {
-      "name": "punctuation.separator.class.hsml",
-      "comment": "hsml punctuated class",
-      "match": "(\\.)(([\\w\\:\\-\\#/]|(\\[.*?\\]))+)(?=[\\.\\(\\s])",
-      "captures": {
-        "2": {
-          "name": "entity.other.attribute-name.class.css.hsml"
-        },
-        "1": {
-          "name": "meta.attribute-name.class.css.hsml"
-        }
-      }
-    },
-    {
-      "name": "punctuation.separator.key-value.hsml",
-      "comment": "hsml attribute",
-      "match": "([\\w\\-]+)=?(\".*?\")",
-      "captures": {
-        "1": {
-          "name": "entity.other.attribute-name.hsml"
-        },
-        "2": {
-          "name": "string.quoted.double.hsml"
-        }
-      }
-    }
+    { "include": "#comments" },
+    { "include": "#doctype" },
+    { "include": "#tag" },
+    { "include": "#id" },
+    { "include": "#class" },
+    { "include": "#attributes" },
+    { "include": "#text-block" }
   ],
-  "repository": {},
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "string.comment.buffered.block.hsml",
+          "comment": "html output comment (//!)",
+          "begin": "//!",
+          "end": "$"
+        },
+        {
+          "name": "comment.line.double-slash.hsml",
+          "comment": "hsml developer comment (//)",
+          "begin": "//",
+          "end": "$"
+        }
+      ]
+    },
+    "doctype": {
+      "patterns": [
+        {
+          "comment": "doctype declaration",
+          "match": "^\\s*(doctype)\\s+(\\w+)",
+          "captures": {
+            "1": { "name": "keyword.other.doctype.hsml" },
+            "2": { "name": "entity.name.type.hsml" }
+          }
+        }
+      ]
+    },
+    "tag": {
+      "patterns": [
+        {
+          "name": "entity.name.tag.hsml",
+          "comment": "hsml tag name (e.g. div, h1, custom-element)",
+          "match": "^\\s*([a-z][a-z0-9-]*)(?=[.#(\\s])"
+        }
+      ]
+    },
+    "id": {
+      "patterns": [
+        {
+          "comment": "hsml id selector (#identifier)",
+          "match": "(#)([\\w-]+)",
+          "captures": {
+            "1": { "name": "meta.attribute-name.id.css.hsml" },
+            "2": { "name": "entity.other.attribute-name.id.css.hsml" }
+          }
+        }
+      ]
+    },
+    "class": {
+      "patterns": [
+        {
+          "comment": "hsml class selector (.classname)",
+          "match": "(\\.)(([\\w:\\-#/]|(\\[.*?\\]))+)(?=[.#(\\s]|$)",
+          "captures": {
+            "1": { "name": "meta.attribute-name.class.css.hsml" },
+            "2": { "name": "entity.other.attribute-name.class.css.hsml" }
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "comment": "hsml attribute block (...)",
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": { "name": "punctuation.section.attributes.begin.hsml" }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": { "name": "punctuation.section.attributes.end.hsml" }
+          },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#attribute-pair" },
+            { "include": "#attribute-boolean" }
+          ]
+        }
+      ]
+    },
+    "attribute-pair": {
+      "patterns": [
+        {
+          "comment": "attribute with value (key=\"value\" or key='value')",
+          "match": "([:@#]?[\\w\\-.]+(?:\\[.*?\\])?(?:\\.[\\w-]+)*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(\"[^\"]*\"|'[^']*')",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.hsml" },
+            "2": { "name": "string.quoted.hsml" }
+          }
+        }
+      ]
+    },
+    "attribute-boolean": {
+      "patterns": [
+        {
+          "comment": "boolean/valueless attribute (e.g. disabled, required)",
+          "match": "(?<=\\(|\\s)([:@#]?[\\w\\-]+)(?=\\s|\\))",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.hsml" }
+          }
+        }
+      ]
+    },
+    "text-block": {
+      "patterns": [
+        {
+          "comment": "text block marker (. at end of tag line)",
+          "match": "(?<=\\S)\\.\\s*$",
+          "name": "punctuation.definition.text-block.hsml"
+        }
+      ]
+    }
+  },
   "scopeName": "text.hsml"
 }
