@@ -8,7 +8,8 @@
     { "include": "#tag" },
     { "include": "#id" },
     { "include": "#class" },
-    { "include": "#attributes" }
+    { "include": "#attributes" },
+    { "include": "#interpolation" }
   ],
   "repository": {
     "comments": {
@@ -147,6 +148,29 @@
           "captures": {
             "1": { "name": "entity.other.attribute-name.hsml" }
           }
+        }
+      ]
+    },
+    "interpolation": {
+      "patterns": [
+        {
+          "comment": "template interpolation {{ expression }}",
+          "name": "expression.embedded.vue",
+          "begin": "\\{\\{",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.interpolation.begin.html.vue" }
+          },
+          "end": "\\}\\}",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.interpolation.end.html.vue" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [
+            {
+              "match": "[^\\s}]+",
+              "name": "variable.other.readwrite.ts"
+            }
+          ]
         }
       ]
     },

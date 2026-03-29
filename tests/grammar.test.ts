@@ -263,3 +263,22 @@ describe('text block', () => {
     expect(findToken(line3Tokens, 'text.block.hsml')).toBeUndefined();
   });
 });
+
+describe('interpolation', () => {
+  it('should tokenize opening braces', () => {
+    const tokens = tokenize('.card {{ fullName }}');
+    expect(findToken(tokens, 'punctuation.definition.interpolation.begin.html.vue')?.text).toBe(
+      '{{',
+    );
+  });
+
+  it('should tokenize closing braces', () => {
+    const tokens = tokenize('.card {{ fullName }}');
+    expect(findToken(tokens, 'punctuation.definition.interpolation.end.html.vue')?.text).toBe('}}');
+  });
+
+  it('should tokenize expression content', () => {
+    const tokens = tokenize('.card {{ fullName }}');
+    expect(findToken(tokens, 'variable.other.readwrite.ts')?.text).toBe('fullName');
+  });
+});
