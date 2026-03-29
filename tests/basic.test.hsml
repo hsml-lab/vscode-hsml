@@ -38,3 +38,9 @@
 //   ^^ entity.other.attribute-name.id.css.hsml
 //     ^ meta.attribute-name.class.css.hsml
 //      ^^^^^ entity.other.attribute-name.class.css.hsml
+
+ .container
+// ^ entity.other.attribute-name.class.css.hsml
+
+ #section
+// ^ entity.other.attribute-name.id.css.hsml

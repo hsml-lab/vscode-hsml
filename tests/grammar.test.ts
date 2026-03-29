@@ -197,14 +197,14 @@ describe('attributes', () => {
     expect(findToken(tokens, 'string.quoted.hsml')?.text).toBe("'hello'");
   });
 
-  it('should tokenize Vue binding attributes as directives', () => {
+  it('should tokenize Vue binding attributes', () => {
     const tokens = tokenize('img(:src="imageUrl")');
-    expect(findToken(tokens, 'keyword.control.directive.hsml')?.text).toBe(':src');
+    expect(findToken(tokens, 'entity.other.attribute-name.hsml')?.text).toBe(':src');
   });
 
-  it('should tokenize Vue event attributes as directives', () => {
+  it('should tokenize Vue event attributes', () => {
     const tokens = tokenize('button(@click="handler")');
-    expect(findToken(tokens, 'keyword.control.directive.hsml')?.text).toBe('@click');
+    expect(findToken(tokens, 'entity.other.attribute-name.hsml')?.text).toBe('@click');
   });
 
   it('should tokenize Vue directives', () => {
@@ -226,6 +226,13 @@ describe('attributes', () => {
 describe('text block', () => {
   it('should tokenize text block marker', () => {
     const tokens = tokenize('  p.text-lg.');
+    expect(findToken(tokens, 'punctuation.definition.text-block.hsml')?.text).toBe('.');
+  });
+
+  it('should preserve tag and class highlighting on text block line', () => {
+    const tokens = tokenize('  p.text-lg.font-medium.');
+    expect(findToken(tokens, 'entity.name.tag.hsml')).toBeDefined();
+    expect(findToken(tokens, 'entity.other.attribute-name.class.css.hsml')).toBeDefined();
     expect(findToken(tokens, 'punctuation.definition.text-block.hsml')?.text).toBe('.');
   });
 
