@@ -1,10 +1,9 @@
 name: Publish
 
 on:
-  workflow_run:
-    workflows: ['Release']
+  release:
     types:
-      - completed
+      - published
 
 permissions:
   contents: read
@@ -13,13 +12,12 @@ jobs:
   publish-vscode:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: 'Publish to VS Code Marketplace'
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          ref: ${{ github.event.release.target_commitish }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
@@ -38,7 +36,7 @@ jobs:
 
       - name: Verify tag matches package version
         env:
-          TAG: ${{ github.event.workflow_run.head_branch }}
+          TAG: ${{ github.event.release.tag_name }}
         run: |
           TAG="${TAG#v}"
           PKG_VERSION="$(node -e "import('./package.json',{with:{type:'json'}}).then(m=>process.stdout.write(m.default.version))")"
