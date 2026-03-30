@@ -363,7 +363,9 @@ describe('interpolation', () => {
 
   it('should tokenize interpolation without spaces', () => {
     const tokens = tokenize('.card {{fullName}}');
-    expect(findToken(tokens, 'punctuation.definition.interpolation.begin.html.vue')?.text).toBe('{{');
+    expect(findToken(tokens, 'punctuation.definition.interpolation.begin.html.vue')?.text).toBe(
+      '{{',
+    );
     expect(findToken(tokens, 'variable.other.readwrite.ts')?.text).toBe('fullName');
     expect(findToken(tokens, 'punctuation.definition.interpolation.end.html.vue')?.text).toBe('}}');
   });
