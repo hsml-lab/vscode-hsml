@@ -2,7 +2,13 @@
   "comments": {
     "lineComment": "//"
   },
-  "brackets": [["(", ")"]],
+  "brackets": [
+    ["(", ")"],
+    ["{{", "}}"],
+    ["{", "}"],
+    ["[(", ")]"],
+    ["[", "]"]
+  ],
   // symbols that are auto closed when typing
   "autoClosingPairs": [
     ["{", "}"],

@@ -2,50 +2,240 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "HSML",
   "patterns": [
-    {
-      "name": "string.comment.buffered.block.hsml",
-      "comment": "html comment",
-      "begin": "//!",
-      "end": "$"
-    },
-    {
-      "name": "comment.line.double-slash.hsml",
-      "comment": "hsml developer comment",
-      "begin": "//",
-      "end": "$"
-    },
-    {
-      "name": "entity.name.tag.hsml",
-      "comment": "hsml tag name",
-      "match": "^\\s*([a-z]+[a-z0-9]*)(?=[\\.\\(\\s])"
-    },
-    {
-      "name": "punctuation.separator.class.hsml",
-      "comment": "hsml punctuated class",
-      "match": "(\\.)(([\\w\\:\\-\\#/]|(\\[.*?\\]))+)(?=[\\.\\(\\s])",
-      "captures": {
-        "2": {
-          "name": "entity.other.attribute-name.class.css.hsml"
-        },
-        "1": {
-          "name": "meta.attribute-name.class.css.hsml"
-        }
-      }
-    },
-    {
-      "name": "punctuation.separator.key-value.hsml",
-      "comment": "hsml attribute",
-      "match": "([\\w\\-]+)=?(\".*?\")",
-      "captures": {
-        "1": {
-          "name": "entity.other.attribute-name.hsml"
-        },
-        "2": {
-          "name": "string.quoted.double.hsml"
-        }
-      }
-    }
+    { "include": "#comments" },
+    { "include": "#doctype" },
+    { "include": "#text-block-line" },
+    { "include": "#tag" },
+    { "include": "#id" },
+    { "include": "#class" },
+    { "include": "#attributes" },
+    { "include": "#interpolation" }
   ],
-  "repository": {},
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "string.comment.buffered.block.hsml",
+          "comment": "html output comment (//!)",
+          "begin": "//!",
+          "end": "$"
+        },
+        {
+          "name": "comment.line.double-slash.hsml",
+          "comment": "hsml developer comment (//)",
+          "begin": "//",
+          "end": "$"
+        }
+      ]
+    },
+    "doctype": {
+      "patterns": [
+        {
+          "comment": "doctype declaration",
+          "match": "^\\s*(doctype)\\s+(\\w+)",
+          "captures": {
+            "1": { "name": "keyword.other.doctype.hsml" },
+            "2": { "name": "entity.name.type.hsml" }
+          }
+        }
+      ]
+    },
+    "tag": {
+      "patterns": [
+        {
+          "name": "entity.name.tag.hsml",
+          "comment": "hsml tag name (e.g. div, h1, custom-element, PwaBadge)",
+          "match": "^\\s*([a-zA-Z][a-zA-Z0-9-]*)(?=[.#(\\s]|$)"
+        }
+      ]
+    },
+    "id": {
+      "patterns": [
+        {
+          "comment": "hsml id selector (#identifier)",
+          "match": "(#)([\\w-]+)(?=[.#(\\s]|$)",
+          "captures": {
+            "1": { "name": "meta.attribute-name.id.css.hsml" },
+            "2": { "name": "entity.other.attribute-name.id.css.hsml" }
+          }
+        }
+      ]
+    },
+    "class": {
+      "patterns": [
+        {
+          "comment": "hsml class selector (.classname)",
+          "match": "(\\.)(([\\w:\\-#/]|(\\[.*?\\]))+)(?=[.#(\\s]|$)",
+          "captures": {
+            "1": { "name": "meta.attribute-name.class.css.hsml" },
+            "2": { "name": "entity.other.attribute-name.class.css.hsml" }
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "comment": "hsml attribute block (...)",
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": { "name": "punctuation.section.attributes.begin.hsml" }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": { "name": "punctuation.section.attributes.end.hsml" }
+          },
+          "patterns": [
+            { "include": "#comments" },
+            { "include": "#attribute-directive" },
+            { "include": "#attribute-pair" },
+            { "include": "#attribute-boolean" }
+          ]
+        }
+      ]
+    },
+    "attribute-directive": {
+      "patterns": [
+        {
+          "comment": "Vue directive with double-quoted expression value",
+          "begin": "(v-[\\w\\-.]+)\\s*=\\s*(\")",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.directive.hsml" },
+            "2": { "name": "punctuation.definition.string.begin.hsml" }
+          },
+          "end": "(\")",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.hsml" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [{ "include": "source.ts" }, { "match": "[^\"']+", "name": "source.ts" }]
+        },
+        {
+          "comment": "Vue directive with single-quoted expression value",
+          "begin": "(v-[\\w\\-.]+)\\s*=\\s*(')",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.directive.hsml" },
+            "2": { "name": "punctuation.definition.string.begin.hsml" }
+          },
+          "end": "(')",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.hsml" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [{ "include": "source.ts" }, { "match": "[^\"']+", "name": "source.ts" }]
+        },
+        {
+          "comment": "Vue directive without value (v-else, v-cloak, etc.)",
+          "match": "(v-[\\w\\-.]+)(?=\\s|\\)|$)",
+          "captures": {
+            "1": { "name": "keyword.control.directive.hsml" }
+          }
+        },
+        {
+          "comment": "Vue/Angular binding with double-quoted expression value",
+          "begin": "([:@#]\\w[\\w\\-.]*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(\")",
+          "beginCaptures": {
+            "1": { "name": "entity.other.attribute-name.hsml" },
+            "2": { "name": "punctuation.definition.string.begin.hsml" }
+          },
+          "end": "(\")",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.hsml" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [{ "include": "source.ts" }, { "match": "[^\"']+", "name": "source.ts" }]
+        },
+        {
+          "comment": "Vue/Angular binding with single-quoted expression value",
+          "begin": "([:@#]\\w[\\w\\-.]*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(')",
+          "beginCaptures": {
+            "1": { "name": "entity.other.attribute-name.hsml" },
+            "2": { "name": "punctuation.definition.string.begin.hsml" }
+          },
+          "end": "(')",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.hsml" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [{ "include": "source.ts" }, { "match": "[^\"']+", "name": "source.ts" }]
+        },
+        {
+          "comment": "Vue/Angular binding without value (#default, :disabled)",
+          "match": "([:@#]\\w[\\w\\-.]*)(?=\\s|\\)|$)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.hsml" }
+          }
+        }
+      ]
+    },
+    "attribute-pair": {
+      "patterns": [
+        {
+          "comment": "regular attribute with value (key=\"value\" or key='value')",
+          "match": "([\\w\\-]+(?:\\.[\\w-]+)*)\\s*=\\s*(\"[^\"]*\"|'[^']*')",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.hsml" },
+            "2": { "name": "string.quoted.hsml" }
+          }
+        },
+        {
+          "comment": "regular attribute with multiline value (key=\"...)",
+          "match": "([\\w\\-]+(?:\\.[\\w-]+)*)\\s*=\\s*(\"[^\"]*|'[^']*)",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.hsml" },
+            "2": { "name": "string.quoted.hsml" }
+          }
+        }
+      ]
+    },
+    "attribute-boolean": {
+      "patterns": [
+        {
+          "comment": "boolean/valueless attribute (e.g. disabled, required)",
+          "match": "(?<=\\(|\\s)([\\w\\-]+)(?=\\s|\\))",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.hsml" }
+          }
+        }
+      ]
+    },
+    "interpolation": {
+      "patterns": [
+        {
+          "comment": "template interpolation {{ expression }}",
+          "name": "expression.embedded.vue",
+          "begin": "\\{\\{",
+          "beginCaptures": {
+            "0": { "name": "punctuation.definition.interpolation.begin.html.vue" }
+          },
+          "end": "\\}\\}",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.interpolation.end.html.vue" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [
+            { "include": "source.ts" },
+            {
+              "match": "[^\\s}]+",
+              "name": "variable.other.readwrite.ts"
+            }
+          ]
+        }
+      ]
+    },
+    "text-block-line": {
+      "patterns": [
+        {
+          "comment": "tag line ending with . starts a text block; content lines must be indented deeper than the tag",
+          "begin": "(?<=^(\\s*)\\S.*)(\\.)\\s*$",
+          "beginCaptures": {
+            "2": { "name": "punctuation.definition.text-block.hsml" }
+          },
+          "while": "^(\\1  |\\s*$)",
+          "contentName": "text.block.hsml"
+        }
+      ]
+    }
+  },
   "scopeName": "text.hsml"
 }
