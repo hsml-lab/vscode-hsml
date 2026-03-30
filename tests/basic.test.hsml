@@ -10,6 +10,9 @@
 //^^^^^^ keyword.other.doctype.hsml
 //       ^^^^ entity.name.type.hsml
 
+ div
+//^ entity.name.tag.hsml
+
  div Hello World
 // ^ entity.name.tag.hsml
 

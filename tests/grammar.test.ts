@@ -111,6 +111,16 @@ describe('tag names', () => {
     expect(findToken(tokens, 'entity.name.tag.hsml')?.text).toBe('h1');
   });
 
+  it('should tokenize standalone tag at end of line', () => {
+    const tokens = tokenize('div');
+    expect(findToken(tokens, 'entity.name.tag.hsml')?.text).toBe('div');
+  });
+
+  it('should tokenize standalone PascalCase tag at end of line', () => {
+    const tokens = tokenize('NavUser');
+    expect(findToken(tokens, 'entity.name.tag.hsml')?.text).toBe('NavUser');
+  });
+
   it('should tokenize custom elements with hyphens', () => {
     const tokens = tokenize('my-component Hello');
     expect(findToken(tokens, 'entity.name.tag.hsml')?.text).toBe('my-component');
@@ -178,6 +188,11 @@ describe('classes', () => {
   it('should tokenize classes with brackets', () => {
     const tokens = tokenize('div.bg-[#1da1f2] ');
     expect(findToken(tokens, 'entity.other.attribute-name.class.css.hsml')).toBeDefined();
+  });
+
+  it('should tokenize id at end of line', () => {
+    const tokens = tokenize('div#app');
+    expect(findToken(tokens, 'entity.other.attribute-name.id.css.hsml')?.text).toBe('app');
   });
 
   it('should tokenize implicit div with id', () => {
