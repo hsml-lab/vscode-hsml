@@ -19,6 +19,12 @@
  my-component Hello
 // ^ entity.name.tag.hsml
 
+ PwaBadge.xl:hidden
+//^^^^^^^ entity.name.tag.hsml
+
+ NavUser(v-if="isHydrated")
+//^^^^^^ entity.name.tag.hsml
+
  div#myid
 // ^ entity.name.tag.hsml
 //  ^ meta.attribute-name.id.css.hsml
@@ -44,3 +50,34 @@
 
  #section
 // ^ entity.other.attribute-name.id.css.hsml
+
+ div.bg-[#1da1f2]
+//  ^ meta.attribute-name.class.css.hsml
+//   ^ entity.other.attribute-name.class.css.hsml
+
+ div.md:p-8.text-center
+//  ^ meta.attribute-name.class.css.hsml
+//   ^ entity.other.attribute-name.class.css.hsml
+//         ^ meta.attribute-name.class.css.hsml
+//          ^ entity.other.attribute-name.class.css.hsml
+
+ div(class="foo")
+//  ^ punctuation.section.attributes.begin.hsml
+//   ^^^^^ entity.other.attribute-name.hsml
+//         ^^^^^ string.quoted.hsml
+//              ^ punctuation.section.attributes.end.hsml
+
+ div(v-if="show")
+//   ^^^^ keyword.control.directive.hsml
+
+ div(v-else)
+//   ^^^^^^ keyword.control.directive.hsml
+
+ img(:src="url")
+//   ^^^^ entity.other.attribute-name.hsml
+
+ button(@click="handler")
+//      ^^^^^^ entity.other.attribute-name.hsml
+
+ input(disabled)
+//     ^^^^^^^^ entity.other.attribute-name.hsml

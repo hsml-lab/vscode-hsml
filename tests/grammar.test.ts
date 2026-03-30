@@ -180,6 +180,11 @@ describe('classes', () => {
     expect(findToken(tokens, 'entity.other.attribute-name.class.css.hsml')).toBeDefined();
   });
 
+  it('should tokenize implicit div with id', () => {
+    const tokens = tokenize('#section ');
+    expect(findToken(tokens, 'entity.other.attribute-name.id.css.hsml')?.text).toBe('section');
+  });
+
   it('should tokenize implicit div with class', () => {
     const tokens = tokenize('.container ');
     expect(findToken(tokens, 'entity.other.attribute-name.class.css.hsml')?.text).toBe('container');
@@ -220,6 +225,70 @@ describe('attributes', () => {
   it('should tokenize Vue directives', () => {
     const tokens = tokenize('div(v-if="show")');
     expect(findToken(tokens, 'keyword.control.directive.hsml')?.text).toBe('v-if');
+  });
+
+  it('should tokenize boolean attribute', () => {
+    const tokens = tokenize('input(disabled)');
+    expect(findToken(tokens, 'entity.other.attribute-name.hsml')?.text).toBe('disabled');
+  });
+
+  it('should tokenize Vue directive without value', () => {
+    const tokens = tokenize('div(v-else)');
+    expect(findToken(tokens, 'keyword.control.directive.hsml')?.text).toBe('v-else');
+  });
+
+  it('should tokenize directive value as embedded TS', () => {
+    const tokens = tokenize('div(v-if="show")');
+    expect(findToken(tokens, 'source.ts.embedded.html.vue')).toBeDefined();
+  });
+
+  it('should tokenize binding value as embedded TS', () => {
+    const tokens = tokenize('img(:src="imageUrl")');
+    expect(findToken(tokens, 'source.ts.embedded.html.vue')).toBeDefined();
+  });
+
+  it('should tokenize comment inside attribute block', () => {
+    const line1 = 'img(';
+    const line2 = '  // comment inside attrs';
+
+    const r1 = grammar.tokenizeLine(line1, INITIAL);
+    const r2 = grammar.tokenizeLine(line2, r1.ruleStack);
+
+    const line2Tokens = r2.tokens.map((t) => ({
+      text: line2.substring(t.startIndex, t.endIndex),
+      scopes: t.scopes,
+    }));
+    expect(findToken(line2Tokens, 'comment.line.double-slash.hsml')).toBeDefined();
+  });
+
+  it('should tokenize multiline attributes', () => {
+    const line1 = 'button(';
+    const line2 = '  @click="handler"';
+    const line3 = '  class="btn"';
+    const line4 = ')';
+
+    const r1 = grammar.tokenizeLine(line1, INITIAL);
+    const r2 = grammar.tokenizeLine(line2, r1.ruleStack);
+    const r3 = grammar.tokenizeLine(line3, r2.ruleStack);
+    const r4 = grammar.tokenizeLine(line4, r3.ruleStack);
+
+    const line2Tokens = r2.tokens.map((t) => ({
+      text: line2.substring(t.startIndex, t.endIndex),
+      scopes: t.scopes,
+    }));
+    expect(findToken(line2Tokens, 'entity.other.attribute-name.hsml')?.text).toBe('@click');
+
+    const line3Tokens = r3.tokens.map((t) => ({
+      text: line3.substring(t.startIndex, t.endIndex),
+      scopes: t.scopes,
+    }));
+    expect(findToken(line3Tokens, 'entity.other.attribute-name.hsml')?.text).toBe('class');
+
+    const line4Tokens = r4.tokens.map((t) => ({
+      text: line4.substring(t.startIndex, t.endIndex),
+      scopes: t.scopes,
+    }));
+    expect(findToken(line4Tokens, 'punctuation.section.attributes.end.hsml')).toBeDefined();
   });
 
   it('should tokenize opening paren', () => {
@@ -290,5 +359,18 @@ describe('interpolation', () => {
   it('should tokenize expression content', () => {
     const tokens = tokenize('.card {{ fullName }}');
     expect(findToken(tokens, 'variable.other.readwrite.ts')?.text).toBe('fullName');
+  });
+
+  it('should tokenize interpolation without spaces', () => {
+    const tokens = tokenize('.card {{fullName}}');
+    expect(findToken(tokens, 'punctuation.definition.interpolation.begin.html.vue')?.text).toBe('{{');
+    expect(findToken(tokens, 'variable.other.readwrite.ts')?.text).toBe('fullName');
+    expect(findToken(tokens, 'punctuation.definition.interpolation.end.html.vue')?.text).toBe('}}');
+  });
+
+  it('should wrap interpolation in expression.embedded.vue', () => {
+    const tokens = tokenize('.card {{ fullName }}');
+    const fullNameToken = findToken(tokens, 'variable.other.readwrite.ts');
+    expect(fullNameToken?.scopes.some((s) => s === 'expression.embedded.vue')).toBe(true);
   });
 });
