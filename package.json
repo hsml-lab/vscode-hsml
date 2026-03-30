@@ -62,7 +62,11 @@
       {
         "language": "hsml",
         "scopeName": "text.hsml",
-        "path": "./syntaxes/hsml.tmLanguage.json"
+        "path": "./syntaxes/hsml.tmLanguage.json",
+        "embeddedLanguages": {
+          "source.ts": "typescript",
+          "source.ts.embedded.html.vue": "typescript"
+        }
       }
     ],
     "languages": [

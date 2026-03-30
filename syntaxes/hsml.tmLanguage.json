@@ -97,12 +97,32 @@
     "attribute-directive": {
       "patterns": [
         {
-          "comment": "Vue directive with value (v-if, v-for, v-model, etc.)",
-          "match": "(v-[\\w\\-.]+)\\s*=\\s*(\"[^\"]*\"|'[^']*')",
-          "captures": {
+          "comment": "Vue directive with double-quoted expression value",
+          "begin": "(v-[\\w\\-.]+)\\s*=\\s*(\")",
+          "beginCaptures": {
             "1": { "name": "keyword.control.directive.hsml" },
-            "2": { "name": "string.quoted.hsml" }
-          }
+            "2": { "name": "punctuation.definition.string.begin.hsml" }
+          },
+          "end": "(\")",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.hsml" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [{ "include": "source.ts" }, { "match": "[^\"']+", "name": "source.ts" }]
+        },
+        {
+          "comment": "Vue directive with single-quoted expression value",
+          "begin": "(v-[\\w\\-.]+)\\s*=\\s*(')",
+          "beginCaptures": {
+            "1": { "name": "keyword.control.directive.hsml" },
+            "2": { "name": "punctuation.definition.string.begin.hsml" }
+          },
+          "end": "(')",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.hsml" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [{ "include": "source.ts" }, { "match": "[^\"']+", "name": "source.ts" }]
         },
         {
           "comment": "Vue directive without value (v-else, v-cloak, etc.)",
@@ -112,20 +132,32 @@
           }
         },
         {
-          "comment": "Vue/Angular binding with value (:src, @click, #slot, [prop], (event))",
-          "match": "([:@#]\\w[\\w\\-.]*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(\"[^\"]*\"|'[^']*')",
-          "captures": {
+          "comment": "Vue/Angular binding with double-quoted expression value",
+          "begin": "([:@#]\\w[\\w\\-.]*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(\")",
+          "beginCaptures": {
             "1": { "name": "entity.other.attribute-name.hsml" },
-            "2": { "name": "string.quoted.hsml" }
-          }
+            "2": { "name": "punctuation.definition.string.begin.hsml" }
+          },
+          "end": "(\")",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.hsml" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [{ "include": "source.ts" }, { "match": "[^\"']+", "name": "source.ts" }]
         },
         {
-          "comment": "Vue/Angular binding with multiline value (:class=\"{...)",
-          "match": "([:@#]\\w[\\w\\-.]*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(\"[^\"]*|'[^']*)",
-          "captures": {
+          "comment": "Vue/Angular binding with single-quoted expression value",
+          "begin": "([:@#]\\w[\\w\\-.]*|\\[\\(?[\\w.-]+\\)?\\])\\s*=\\s*(')",
+          "beginCaptures": {
             "1": { "name": "entity.other.attribute-name.hsml" },
-            "2": { "name": "string.quoted.hsml" }
-          }
+            "2": { "name": "punctuation.definition.string.begin.hsml" }
+          },
+          "end": "(')",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.hsml" }
+          },
+          "contentName": "source.ts.embedded.html.vue",
+          "patterns": [{ "include": "source.ts" }, { "match": "[^\"']+", "name": "source.ts" }]
         },
         {
           "comment": "Vue/Angular binding without value (#default, :disabled)",
