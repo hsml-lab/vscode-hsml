@@ -21,7 +21,8 @@
     "client/out",
     "client/package.json",
     "language-configuration.json",
-    "syntaxes/hsml.tmLanguage.json"
+    "syntaxes/hsml.tmLanguage.json",
+    "syntaxes/vue-hsml.tmLanguage.json"
   ],
   "type": "module",
   "main": "./client/out/extension.js",
