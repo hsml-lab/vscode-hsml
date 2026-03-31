@@ -21,6 +21,7 @@
     "client/out",
     "client/package.json",
     "language-configuration.json",
+    "LICENSE",
     "syntaxes/hsml.tmLanguage.json",
     "syntaxes/vue-hsml.tmLanguage.json"
   ],
