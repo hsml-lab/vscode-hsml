@@ -4,13 +4,10 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { loadWASM, OnigScanner, OnigString } from 'vscode-oniguruma';
 import type { IGrammar } from 'vscode-textmate';
 import { INITIAL, Registry, parseRawGrammar } from 'vscode-textmate';
+import type { Token } from './utils.js';
+import { findToken } from './utils.js';
 
 let grammar: IGrammar;
-
-interface Token {
-  text: string;
-  scopes: string[];
-}
 
 function tokenize(line: string): Token[] {
   const result = grammar.tokenizeLine(line, INITIAL);
@@ -18,10 +15,6 @@ function tokenize(line: string): Token[] {
     text: line.substring(token.startIndex, token.endIndex),
     scopes: token.scopes,
   }));
-}
-
-function findToken(tokens: Token[], scope: string): Token | undefined {
-  return tokens.find((t) => t.scopes.some((s) => s === scope));
 }
 
 beforeAll(async () => {

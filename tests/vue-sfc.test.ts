@@ -4,17 +4,10 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { loadWASM, OnigScanner, OnigString } from 'vscode-oniguruma';
 import type { IGrammar, IOnigLib } from 'vscode-textmate';
 import { INITIAL, Registry, parseRawGrammar } from 'vscode-textmate';
+import type { Token } from './utils.js';
+import { findToken } from './utils.js';
 
 let grammar: IGrammar;
-
-interface Token {
-  text: string;
-  scopes: string[];
-}
-
-function findToken(tokens: Token[], scope: string): Token | undefined {
-  return tokens.find((t) => t.scopes.some((s) => s === scope));
-}
 
 beforeAll(async () => {
   const wasmBin = readFileSync(
@@ -89,6 +82,30 @@ describe('Vue SFC HSML embedding', () => {
   it('should highlight hsml as string value', () => {
     const results = tokenizeLines(['<template lang="hsml">', '</template>']);
     expect(findToken(results[0]!.tokens, 'string.quoted.html.vue')?.text).toBe('hsml');
+  });
+
+  it('should highlight opening quote of lang value', () => {
+    const results = tokenizeLines(['<template lang="hsml">', '</template>']);
+    expect(
+      findToken(results[0]!.tokens, 'punctuation.definition.string.begin.html.vue')?.text,
+    ).toBe('"');
+  });
+
+  it('should highlight closing quote of lang value', () => {
+    const results = tokenizeLines(['<template lang="hsml">', '</template>']);
+    expect(findToken(results[0]!.tokens, 'punctuation.definition.string.end.html.vue')?.text).toBe(
+      '"',
+    );
+  });
+
+  it('should highlight single quotes for lang value', () => {
+    const results = tokenizeLines(["<template lang='hsml'>", '</template>']);
+    expect(
+      findToken(results[0]!.tokens, 'punctuation.definition.string.begin.html.vue')?.text,
+    ).toBe("'");
+    expect(findToken(results[0]!.tokens, 'punctuation.definition.string.end.html.vue')?.text).toBe(
+      "'",
+    );
   });
 
   it('should highlight closing >', () => {

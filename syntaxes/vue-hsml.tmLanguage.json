@@ -28,19 +28,39 @@
           },
           "patterns": [
             {
-              "match": "\\b(lang)\\s*=\\s*(['\"])(hsml)\\2",
+              "match": "\\b(lang)\\s*=\\s*(\")(hsml)(\")",
               "captures": {
                 "1": { "name": "entity.other.attribute-name.html.vue" },
                 "2": { "name": "punctuation.definition.string.begin.html.vue" },
-                "3": { "name": "string.quoted.html.vue" }
+                "3": { "name": "string.quoted.html.vue" },
+                "4": { "name": "punctuation.definition.string.end.html.vue" }
               }
             },
             {
-              "match": "\\b([a-zA-Z-]+)\\s*=\\s*(['\"])([^'\"]*?)\\2",
+              "match": "\\b(lang)\\s*=\\s*(')(hsml)(')",
               "captures": {
                 "1": { "name": "entity.other.attribute-name.html.vue" },
                 "2": { "name": "punctuation.definition.string.begin.html.vue" },
-                "3": { "name": "string.quoted.html.vue" }
+                "3": { "name": "string.quoted.html.vue" },
+                "4": { "name": "punctuation.definition.string.end.html.vue" }
+              }
+            },
+            {
+              "match": "\\b([a-zA-Z-]+)\\s*=\\s*(\")(.*?)(\")",
+              "captures": {
+                "1": { "name": "entity.other.attribute-name.html.vue" },
+                "2": { "name": "punctuation.definition.string.begin.html.vue" },
+                "3": { "name": "string.quoted.html.vue" },
+                "4": { "name": "punctuation.definition.string.end.html.vue" }
+              }
+            },
+            {
+              "match": "\\b([a-zA-Z-]+)\\s*=\\s*(')(.*?)(')",
+              "captures": {
+                "1": { "name": "entity.other.attribute-name.html.vue" },
+                "2": { "name": "punctuation.definition.string.begin.html.vue" },
+                "3": { "name": "string.quoted.html.vue" },
+                "4": { "name": "punctuation.definition.string.end.html.vue" }
               }
             }
           ]
