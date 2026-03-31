@@ -1,0 +1,81 @@
+{
+  "scopeName": "vue.hsml.codeblock",
+  "injectionSelector": "L:text.html.vue",
+  "patterns": [
+    {
+      "begin": "([a-zA-Z0-9:-]+)\\b(?=[^>]*\\blang\\s*=\\s*(['\"]?)hsml\\b\\2)",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.tag.$1.html.vue"
+        }
+      },
+      "end": "(</)(\\1)\\s*(?=>)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.tag.begin.html.vue"
+        },
+        "2": {
+          "name": "entity.name.tag.$2.html.vue"
+        }
+      },
+      "patterns": [
+        {
+          "comment": "tag attributes before the closing >",
+          "begin": "\\G",
+          "end": ">",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.tag.end.html.vue" }
+          },
+          "patterns": [
+            {
+              "match": "\\b(lang)\\s*=\\s*(\")(hsml)(\")",
+              "captures": {
+                "1": { "name": "entity.other.attribute-name.html.vue" },
+                "2": { "name": "punctuation.definition.string.begin.html.vue" },
+                "3": { "name": "string.quoted.html.vue" },
+                "4": { "name": "punctuation.definition.string.end.html.vue" }
+              }
+            },
+            {
+              "match": "\\b(lang)\\s*=\\s*(')(hsml)(')",
+              "captures": {
+                "1": { "name": "entity.other.attribute-name.html.vue" },
+                "2": { "name": "punctuation.definition.string.begin.html.vue" },
+                "3": { "name": "string.quoted.html.vue" },
+                "4": { "name": "punctuation.definition.string.end.html.vue" }
+              }
+            },
+            {
+              "match": "\\b([a-zA-Z-]+)\\s*=\\s*(\")(.*?)(\")",
+              "captures": {
+                "1": { "name": "entity.other.attribute-name.html.vue" },
+                "2": { "name": "punctuation.definition.string.begin.html.vue" },
+                "3": { "name": "string.quoted.html.vue" },
+                "4": { "name": "punctuation.definition.string.end.html.vue" }
+              }
+            },
+            {
+              "match": "\\b([a-zA-Z-]+)\\s*=\\s*(')(.*?)(')",
+              "captures": {
+                "1": { "name": "entity.other.attribute-name.html.vue" },
+                "2": { "name": "punctuation.definition.string.begin.html.vue" },
+                "3": { "name": "string.quoted.html.vue" },
+                "4": { "name": "punctuation.definition.string.end.html.vue" }
+              }
+            }
+          ]
+        },
+        {
+          "begin": "(?<=>)",
+          "end": "(?=<\\/)",
+          "name": "text.hsml",
+          "patterns": [
+            {
+              "include": "text.hsml"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

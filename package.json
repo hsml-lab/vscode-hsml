@@ -21,7 +21,8 @@
     "client/out",
     "client/package.json",
     "language-configuration.json",
-    "syntaxes/hsml.tmLanguage.json"
+    "syntaxes/hsml.tmLanguage.json",
+    "syntaxes/vue-hsml.tmLanguage.json"
   ],
   "type": "module",
   "main": "./client/out/extension.js",
@@ -72,6 +73,16 @@
         "embeddedLanguages": {
           "source.ts": "typescript",
           "source.ts.embedded.html.vue": "typescript"
+        }
+      },
+      {
+        "scopeName": "vue.hsml.codeblock",
+        "path": "./syntaxes/vue-hsml.tmLanguage.json",
+        "injectTo": [
+          "text.html.vue"
+        ],
+        "embeddedLanguages": {
+          "text.hsml": "hsml"
         }
       }
     ],
