@@ -17,6 +17,12 @@
     "url": "https://github.com/hsml-lab/vscode-hsml.git"
   },
   "publisher": "hsml-lab",
+  "files": [
+    "client/out",
+    "client/package.json",
+    "language-configuration.json",
+    "syntaxes/hsml.tmLanguage.json"
+  ],
   "type": "module",
   "main": "./client/out/extension.js",
   "scripts": {
