@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { loadWASM, OnigScanner, OnigString } from 'vscode-oniguruma';
-import { type IGrammar, INITIAL, Registry, parseRawGrammar } from 'vscode-textmate';
+import type { IGrammar } from 'vscode-textmate';
+import { INITIAL, Registry, parseRawGrammar } from 'vscode-textmate';
 
 let grammar: IGrammar;
 

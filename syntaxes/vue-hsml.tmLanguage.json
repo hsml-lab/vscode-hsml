@@ -20,6 +20,32 @@
       },
       "patterns": [
         {
+          "comment": "tag attributes before the closing >",
+          "begin": "\\G",
+          "end": ">",
+          "endCaptures": {
+            "0": { "name": "punctuation.definition.tag.end.html.vue" }
+          },
+          "patterns": [
+            {
+              "match": "\\b(lang)\\s*=\\s*(['\"])(hsml)\\2",
+              "captures": {
+                "1": { "name": "entity.other.attribute-name.html.vue" },
+                "2": { "name": "punctuation.definition.string.begin.html.vue" },
+                "3": { "name": "string.quoted.html.vue" }
+              }
+            },
+            {
+              "match": "\\b([a-zA-Z-]+)\\s*=\\s*(['\"])([^'\"]*?)\\2",
+              "captures": {
+                "1": { "name": "entity.other.attribute-name.html.vue" },
+                "2": { "name": "punctuation.definition.string.begin.html.vue" },
+                "3": { "name": "string.quoted.html.vue" }
+              }
+            }
+          ]
+        },
+        {
           "begin": "(?<=>)",
           "end": "(?=<\\/)",
           "name": "text.hsml",
