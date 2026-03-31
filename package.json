@@ -67,6 +67,16 @@
           "source.ts": "typescript",
           "source.ts.embedded.html.vue": "typescript"
         }
+      },
+      {
+        "scopeName": "markdown.hsml.codeblock",
+        "path": "./syntaxes/markdown-hsml.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.hsml": "hsml"
+        }
       }
     ],
     "languages": [
