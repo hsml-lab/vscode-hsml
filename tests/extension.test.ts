@@ -39,9 +39,7 @@ describe('activate', () => {
 
     expect(mockStart).toHaveBeenCalled();
   });
-});
 
-describe('activate', () => {
   it('should register restart command', async () => {
     const { commands } = await import('vscode');
     const { activate } = await import('../client/src/extension.js');
