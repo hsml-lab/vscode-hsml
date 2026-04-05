@@ -23,6 +23,7 @@
     "language-configuration.json",
     "LICENSE",
     "syntaxes/hsml.tmLanguage.json",
+    "syntaxes/markdown-hsml.tmLanguage.json",
     "syntaxes/vue-hsml.tmLanguage.json"
   ],
   "type": "module",
@@ -91,9 +92,23 @@
         "embeddedLanguages": {
           "text.hsml": "hsml"
         }
+      },
+      {
+        "language": "hsml-markdown-injection",
+        "scopeName": "markdown.hsml.codeblock",
+        "path": "./syntaxes/markdown-hsml.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.hsml": "hsml"
+        }
       }
     ],
     "languages": [
+      {
+        "id": "hsml-markdown-injection"
+      },
       {
         "id": "hsml",
         "aliases": [
