@@ -4,6 +4,7 @@ import { resolveServerPath } from './__mocks__/binary.js';
 
 const mockContext = {
   globalStorageUri: { fsPath: '/tmp/test-storage' },
+  subscriptions: [],
 } as unknown as ExtensionContext;
 
 beforeEach(() => {
@@ -37,6 +38,35 @@ describe('activate', () => {
     await activate(mockContext);
 
     expect(mockStart).toHaveBeenCalled();
+  });
+
+  it('should register restart command', async () => {
+    const { commands } = await import('vscode');
+    const { activate } = await import('../client/src/extension.js');
+    await activate(mockContext);
+
+    expect(commands.registerCommand).toHaveBeenCalledWith(
+      'hsml.restartLanguageServer',
+      expect.any(Function),
+    );
+  });
+});
+
+describe('restart command', () => {
+  it('should call restart on existing client', async () => {
+    const { commands } = await import('vscode');
+    const { mockRestart } = await import('./__mocks__/vscode-languageclient-node.js');
+    const { activate } = await import('../client/src/extension.js');
+    await activate(mockContext);
+
+    // Get the registered callback
+    const registerCall = (commands.registerCommand as ReturnType<typeof vi.fn>).mock.calls.find(
+      (call) => call[0] === 'hsml.restartLanguageServer',
+    );
+    const restartCallback = registerCall?.[1] as () => Promise<void>;
+    await restartCallback();
+
+    expect(mockRestart).toHaveBeenCalled();
   });
 });
 
