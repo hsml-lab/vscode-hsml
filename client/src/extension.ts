@@ -1,12 +1,12 @@
 import type { ExtensionContext } from 'vscode';
-import { workspace } from 'vscode';
+import { commands, workspace } from 'vscode';
 import type { Executable, LanguageClientOptions, ServerOptions } from 'vscode-languageclient/node';
 import { LanguageClient } from 'vscode-languageclient/node';
 import { resolveServerPath } from './binary.js';
 
 let client: LanguageClient | undefined;
 
-export async function activate(context: ExtensionContext) {
+async function startClient(context: ExtensionContext): Promise<void> {
   const serverPath = await resolveServerPath(context);
   if (!serverPath) {
     return;
@@ -36,7 +36,21 @@ export async function activate(context: ExtensionContext) {
     clientOptions,
   );
 
-  client.start();
+  await client.start();
+}
+
+export async function activate(context: ExtensionContext) {
+  context.subscriptions.push(
+    commands.registerCommand('hsml.restartLanguageServer', async () => {
+      if (client) {
+        await client.restart();
+      } else {
+        await startClient(context);
+      }
+    }),
+  );
+
+  await startClient(context);
 }
 
 export function deactivate(): Promise<void> | undefined {

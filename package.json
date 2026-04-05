@@ -55,6 +55,12 @@
     "vscode-tmgrammar-test": "0.1.3"
   },
   "contributes": {
+    "commands": [
+      {
+        "command": "hsml.restartLanguageServer",
+        "title": "HSML: Restart Language Server"
+      }
+    ],
     "configuration": {
       "type": "object",
       "title": "HSML configuration",

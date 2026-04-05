@@ -11,8 +11,8 @@
 
 ## Features
 
-- Syntax highlighting for `.hsml` files
-- Diagnostics and hover via the [hsml](https://github.com/hsml-lab/hsml) language server
+- Syntax highlighting for `.hsml` files and `<template lang="hsml">` in Vue SFCs
+- Diagnostics, hover, and formatting via the [hsml](https://github.com/hsml-lab/hsml) language server
 - Auto-download of the `hsml` binary from GitHub releases
 - Comment toggling (`//` line comments)
 - Bracket matching and auto-closing pairs

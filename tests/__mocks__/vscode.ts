@@ -28,4 +28,7 @@ export const Uri = {
 
 export const commands = {
   executeCommand: vi.fn(),
+  registerCommand: vi.fn((_command: string, _callback: (...args: unknown[]) => unknown) => ({
+    dispose: vi.fn(),
+  })),
 };
