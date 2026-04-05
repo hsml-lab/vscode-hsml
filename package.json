@@ -1,7 +1,7 @@
 {
   "name": "hsml",
   "displayName": "hsml",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "hsml support for Visual Studio Code",
   "categories": [
     "Programming Languages"
